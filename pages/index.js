@@ -31,6 +31,8 @@ export default function Home() {
   const [viewerTotal, setViewerTotal] = useState(32);
   const [activityMessages, setActivityMessages] = useState([]);
   const [theme, setTheme] = useState("")
+  const [entered, setEntered] = useState(false);
+
 
   const themes = {
     night: [
@@ -114,7 +116,13 @@ export default function Home() {
   const shareActivity = (text) => {
     const id = Date.now();
 
+    // 画面に出す
     setActivityMessages((prev) => [...prev, { id, text }]);
+
+    // 軽い振動（スマホ）
+    if (navigator.vibrate) {
+      navigator.vibrate(30);
+    }
 
     setTimeout(() => {
       setActivityMessages((prev) =>
@@ -156,19 +164,40 @@ export default function Home() {
   };
 
   return (
-    <div className="container">
-      {/* 背景 */}
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        preload="auto"
-        poster="/fire.png"
-        className="bg-video"
-      >
-        <source src="/fire.mp4" type="video/mp4" />
-      </video>
+    <>
+        {!entered && (
+          <div className="intro-modal">
+            <h2>🔥 CalmFire</h2>
+            <p>
+              CalmFireは、焚火の映像と音を通して、<br />
+              同じ時間を静かに共有する場所です。
+            </p>
+            <p className="small">
+              音が流れます。<br />
+              必要なものだけONにしてください。
+            </p>
+            <button
+              onClick={() => setEntered(true)}
+              className="enter-button"
+            >
+              焚火会場へ入る 🔥
+            </button>
+          </div>
+        )}
+
+        <div className="container">
+          {/* 背景 */}
+          <video
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            poster="/fire.png"
+            className="bg-video"
+          >
+            <source src="/fire.mp4" type="video/mp4" />
+          </video>
+
       <p className="theme">
         今日の焚火テーマ  
         <br />
@@ -260,5 +289,6 @@ export default function Home() {
         焚火サークル「カコイビ」発のリラックスアプリ
       </footer>
     </div>
+    </>
   );
 }
