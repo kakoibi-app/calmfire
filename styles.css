@@ -516,11 +516,3 @@ body, html {
   border-color: rgba(255,180,80,.5);
 }
 
-.ad-box {
-  position: fixed;
-
-  right: 12px;
-  bottom: 280px;
-
-  width: 160px;
-}
