@@ -349,7 +349,7 @@ export default function Home() {
           <button onClick={sendMessage}>🔥</button>
         </div>
         <p className="small-note">
-        音は右上の🎧から調整できます
+        音は左上の🎧から調整できます
         </p>
         <div className="activities">
           <button
