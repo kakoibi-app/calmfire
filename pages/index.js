@@ -69,17 +69,28 @@ export default function Home() {
         snapshot.docs.forEach((doc) => {
           const data = doc.data();
 
-          // ✅ 自分の投稿なら表示しない
+          // ✅ 自分の操作は無視（二重防止）
           if (data.clientId === clientId.current) return;
 
           const id = Date.now();
-          setFloatingMessages((prev) => [...prev, { id, text: data.text }]);
 
-          setTimeout(() => {
-            setFloatingMessages((prev) =>
-              prev.filter((m) => m.id !== id)
-            );
-          }, 5000);
+          if (data.type === "message") {
+            setFloatingMessages((prev) => [...prev, { id, text: data.text }]);
+            setTimeout(() => {
+              setFloatingMessages((prev) =>
+                prev.filter((m) => m.id !== id)
+              );
+            }, 5000);
+          }
+
+          if (data.type === "activity") {
+            setActivityMessages((prev) => [...prev, { id, text: data.text }]);
+            setTimeout(() => {
+              setActivityMessages((prev) =>
+                prev.filter((m) => m.id !== id)
+              );
+            }, 4000);
+          }
         });
       }
     );
@@ -151,22 +162,27 @@ export default function Home() {
     } catch (e) {}
   }, []);
 
-  const shareActivity = (text) => {
+  const shareActivity = async (text) => {
     const id = Date.now();
 
-    // 画面に出す
+    // ✅ 自分の画面には即表示
     setActivityMessages((prev) => [...prev, { id, text }]);
 
-    // 軽い振動（スマホ）
-    if (navigator.vibrate) {
-      navigator.vibrate(30);
-    }
+    if (navigator.vibrate) navigator.vibrate(30);
 
     setTimeout(() => {
       setActivityMessages((prev) =>
         prev.filter((m) => m.id !== id)
       );
     }, 4000);
+
+    // ✅ 他の人用に Firestore に送信
+    await addDoc(collection(db, "messages"), {
+      type: "activity",
+      text,
+      createdAt: Date.now(),
+      clientId: clientId.current,
+    });
   };
 
   // 投稿
