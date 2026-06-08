@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Howl } from "howler";
 import { db } from "../lib/firebase";
 import {
@@ -10,12 +10,17 @@ import {
   limit,
 } from "firebase/firestore";
 
+
 // 音
 const fireSound = new Howl({ src: ["/sounds/fire.mp3"], loop: true, volume: 0.37 });
 const riverSound = new Howl({ src: ["/sounds/river.mp3"], loop: true, volume: 0.15 });
 const nightSound = new Howl({ src: ["/sounds/night.mp3"], loop: true, volume: 0.25 });
 
 export default function Home() {
+  const videoRef = useRef(null);
+  const clientId = useRef(
+    Math.random().toString(36).slice(2)
+  );
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
 
@@ -57,27 +62,30 @@ export default function Home() {
     ]
   };
 
-  // 投稿取得
-  //useEffect(() => {
-  //  const unsub = onSnapshot(
-  //    query(collection(db, "messages"), orderBy("createdAt", "desc"), limit(1)),
-  //    (snapshot) => {
-  //      snapshot.docs.forEach((doc) => {
-  //        const msg = doc.data().text;
-  //        const id = Date.now();
-//
-   //       setFloatingMessages((prev) => [...prev, { id, text: msg }]);
-//
-   //       setTimeout(() => {
-   //         setFloatingMessages((prev) =>
-   //           prev.filter((m) => m.id !== id)
-   //         );
-  //        }, 5000);
-  //      });
-  //    }
-  //  );
-  //  return () => unsub();
-  //}, []);
+  useEffect(() => {
+    const unsub = onSnapshot(
+      query(collection(db, "messages"), orderBy("createdAt", "desc"), limit(1)),
+      (snapshot) => {
+        snapshot.docs.forEach((doc) => {
+          const data = doc.data();
+
+          // ✅ 自分の投稿なら表示しない
+          if (data.clientId === clientId.current) return;
+
+          const id = Date.now();
+          setFloatingMessages((prev) => [...prev, { id, text: data.text }]);
+
+          setTimeout(() => {
+            setFloatingMessages((prev) =>
+              prev.filter((m) => m.id !== id)
+            );
+          }, 5000);
+        });
+      }
+    );
+
+    return () => unsub();
+  }, []);
 
   useEffect(() => {
     setViewerCount(Math.floor(Math.random() * 30 + 10));
@@ -175,9 +183,10 @@ export default function Home() {
     }, 5000);
 
     // ✅ あとからFirestoreに送信
-    await addDoc(collection(db, "messages"), {
-      text,
-      createdAt: Date.now(),
+    await addDoc(collection(db, "messages"), { 
+    text,
+    createdAt: Date.now(),
+    clientId: clientId.current,
     });
 
     setInput("");
@@ -227,9 +236,17 @@ export default function Home() {
                 好きなものだけONにしてください。
               </p>
 
+              
               <button
                 className="enter-button"
-                onClick={() => setEntered(true)}
+                onClick={() => {
+                  setEntered(true);
+                  if (videoRef.current) {
+                    videoRef.current.play().catch(() => {
+                      // 再生できなくても何もしない（posterに任せる）
+                    });
+                  }
+                }}
               >
                 焚火会場へ入る 🔥
               </button>
@@ -242,16 +259,20 @@ export default function Home() {
 
         <div className={`container ${!entered ? "locked" : ""}`}>
           {/* 背景 */}
+          
           <video
+            ref={videoRef}
+            autoPlay
             loop
             muted
             playsInline
-            preload="metadata"
+            preload="auto"
             poster="/fire.png"
             className="bg-video"
           >
             <source src="/fire.mp4" type="video/mp4" />
           </video>
+
 
       
         <div className="theme-wrapper">
