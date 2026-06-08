@@ -32,6 +32,13 @@ export default function Home() {
   const [activityMessages, setActivityMessages] = useState([]);
   const [theme, setTheme] = useState("")
   const [entered, setEntered] = useState(false);
+  const [showAudioPanel, setShowAudioPanel] = useState(false);
+  const [fireVolume, setFireVolume] = useState(37);
+  const [riverVolume, setRiverVolume] = useState(15);
+  const [nightVolume, setNightVolume] = useState(25);
+  const changeVolume = (sound, value) => {
+  sound.volume(value / 100);
+};
 
 
   const themes = {
@@ -156,10 +163,11 @@ export default function Home() {
   // 音切替
   const toggle = (sound, stateSetter, current) => {
     if (current) {
-      sound.stop();
+      sound.pause();
     } else {
       sound.play();
     }
+
     stateSetter(!current);
   };
 
@@ -201,7 +209,7 @@ export default function Home() {
           </video>
 
       
-        {theme && (
+        <div className="theme-wrapper">
           <div className="theme">
             <div className="theme-label">
               今日の焚火テーマ
@@ -211,33 +219,97 @@ export default function Home() {
               {theme}
             </div>
           </div>
+
+          <button
+            className="audio-button"
+            onClick={() => setShowAudioPanel(!showAudioPanel)}
+          >
+            🎧
+          </button>
+        </div>
+        {showAudioPanel && (
+          <div className="audio-panel">
+
+            <div className="audio-row">
+
+              <button
+                className={`audio-toggle ${fireOn ? "on" : ""}`}
+                onClick={() => toggle(fireSound, setFireOn, fireOn)}
+              >
+                🔥
+              </button>
+
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value={fireVolume}
+                onChange={(e) => {
+                  const value = Number(e.target.value);
+                  setFireVolume(value);
+                  fireSound.volume(value / 100);
+                }}
+              />
+
+              <span>{fireVolume}%</span>
+
+            </div>
+
+            <div className="audio-row">
+
+              <button
+                className={`audio-toggle ${riverOn ? "on" : ""}`}
+                onClick={() => toggle(riverSound, setRiverOn, riverOn)}
+              >
+                🌊
+              </button>
+
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value={riverVolume}
+                onChange={(e) => {
+                  const value = Number(e.target.value);
+                  setRiverVolume(value);
+                  riverSound.volume(value / 100);
+                }}
+              />
+
+              <span>{riverVolume}%</span>
+
+            </div>
+
+            <div className="audio-row">
+
+              <button
+                className={`audio-toggle ${nightOn ? "on" : ""}`}
+                onClick={() => toggle(nightSound, setNightOn, nightOn)}
+              >
+                🌙
+              </button>
+
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value={nightVolume}
+                onChange={(e) => {
+                  const value = Number(e.target.value);
+                  setNightVolume(value);
+                  nightSound.volume(value / 100);
+                }}
+              />
+
+              <span>{nightVolume}%</span>
+
+            </div>
+
+          </div>
         )}
 
       {/* UI */}
       <div className="content">
-
-        {showHint && (
-          <div className="sound-hint" onClick={() => {
-            setShowHint(false);
-            localStorage.setItem("soundHintSeen", "true");
-          }}>
-            🔊 音が流れます。好きな音だけONにしてください
-          </div>
-        )}
-        {/* 音コントロール */}
-        <div className="controls">
-          <button onClick={() => toggle(fireSound, setFireOn, fireOn)}>
-            🔥 {fireOn ? "ON" : "OFF"}
-          </button>
-
-          <button onClick={() => toggle(riverSound, setRiverOn, riverOn)}>
-            🌊 {riverOn ? "ON" : "OFF"}
-          </button>
-
-          <button onClick={() => toggle(nightSound, setNightOn, nightOn)}>
-            🌙 {nightOn ? "ON" : "OFF"}
-          </button>
-        </div>
 
         {/* 人数（仮） */}
         <div className="presence">
@@ -276,6 +348,9 @@ export default function Home() {
           />
           <button onClick={sendMessage}>🔥</button>
         </div>
+        <p className="small-note">
+        音は右上の🎧から調整できます
+        </p>
         <div className="activities">
           <button
             onClick={() =>
