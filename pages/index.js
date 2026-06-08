@@ -120,6 +120,12 @@ export default function Home() {
     if (seen) setShowHint(false);
   }, []);
 
+  useEffect(() => {
+    try {
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+    } catch (e) {}
+  }, []);
+
   const shareActivity = (text) => {
     const id = Date.now();
 
@@ -388,6 +394,9 @@ export default function Home() {
       <footer className="footer">
         焚火サークル「カコイビ」発のリラックスアプリ
       </footer>
+      <div className="ad-box">
+        広告エリア
+      </div>
     </div>
     </>
   );
