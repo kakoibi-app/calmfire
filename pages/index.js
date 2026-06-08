@@ -166,26 +166,28 @@ export default function Home() {
   return (
     <>
         {!entered && (
-          <div className="intro-modal">
-            <h2>🔥 CalmFire</h2>
-            <p>
-              CalmFireは、焚火の映像と音を通して、<br />
-              同じ時間を静かに共有する場所です。
-            </p>
-            <p className="small">
-              音が流れます。<br />
-              必要なものだけONにしてください。
-            </p>
-            <button
-              onClick={() => setEntered(true)}
-              className="enter-button"
-            >
-              焚火会場へ入る 🔥
-            </button>
+          <div className="intro-overlay">
+            <div className="intro-modal">
+              <h2>🔥 CalmFire</h2>
+              <p>
+                焚火の映像と音を通して、<br />
+                同じ時間を静かに共有する場所です。
+              </p>
+              <p className="small">
+                音が流れます。<br />
+                必要なものだけONにしてください。
+              </p>
+              <button
+                className="enter-button"
+                onClick={() => setEntered(true)}
+              >
+                焚火会場へ入る 🔥
+              </button>
+            </div>
           </div>
         )}
 
-        <div className="container">
+        <div className={`container ${!entered ? "locked" : ""}`}>
           {/* 背景 */}
           <video
             loop

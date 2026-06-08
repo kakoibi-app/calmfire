@@ -104,6 +104,43 @@ body, html {
   text-align: center;
   margin-bottom: 8px;
 }
+.intro-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.intro-modal {
+  max-width: 320px;
+  padding: 24px;
+  text-align: center;
+  background: rgba(0,0,0,0.9);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 12px;
+}
+
+.intro-modal h2 {
+  margin-bottom: 12px;
+}
+
+.enter-button {
+  margin-top: 16px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: #fff;
+  color: #000;
+  border: none;
+  font-size: 14px;
+}
+.container.locked {
+  pointer-events: none;
+  filter: blur(6px);
+}
+
 
 
 @media (max-width: 768px) {
