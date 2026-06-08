@@ -198,20 +198,17 @@ export default function Home() {
             <source src="/fire.mp4" type="video/mp4" />
           </video>
 
-      <p className="theme">
-        今日の焚火テーマ  
-        <br />
-        「{theme}」
-      </p>
+      
+        {theme && (
+          <p className="theme">
+            今日の焚火テーマ<br />
+            「{theme}」
+          </p>
+        )}
+
       {/* UI */}
       <div className="content">
         <h1>🔥 CalmFire</h1>
-        
-        <p className="description">
-          CalmFire は、焚火の映像と音を楽しみながら、  
-          同じ時間を静かに共有するためのリラックス空間です。
-        </p>
-
 
         {showHint && (
           <div className="sound-hint" onClick={() => {
