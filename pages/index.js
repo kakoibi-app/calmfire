@@ -107,11 +107,28 @@ export default function Home() {
   }, []);
 
   
+  // 今日の日付キーを作る関数（index.jsの上の方に書いてOK）
+  const getTodayKey = () => {
+    const d = new Date();
+    return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+  };
+
+  // 今日の焚火テーマを決める useEffect
   useEffect(() => {
     const hour = new Date().getHours();
     const timeKey = hour >= 18 || hour < 5 ? "night" : "day";
     const list = themes[timeKey];
-    setTheme(list[Math.floor(Math.random() * list.length)]);
+
+    const todayKey = getTodayKey();
+
+    // 日付文字列から安定した index を作る
+    let hash = 0;
+    for (let i = 0; i < todayKey.length; i++) {
+      hash += todayKey.charCodeAt(i);
+    }
+
+    const index = hash % list.length;
+    setTheme(list[index]);
   }, []);
 
   
