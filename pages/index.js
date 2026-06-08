@@ -216,10 +216,10 @@ export default function Home() {
               >
                 焚火会場へ入る 🔥
               </button>
+              <p className="intro-links">
+                <a href="/about">CalmFireについて</a>
+              </p>
             </div>
-            <p className="intro-links">
-              <a href="/about">CalmFireについて</a>
-            </p>
           </div>
         )}
 
