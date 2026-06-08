@@ -202,15 +202,19 @@ export default function Home() {
 
       
         {theme && (
-          <p className="theme">
-            今日の焚火テーマ<br />
-            「{theme}」
-          </p>
+          <div className="theme">
+            <div className="theme-label">
+              今日の焚火テーマ
+            </div>
+
+            <div className="theme-title">
+              {theme}
+            </div>
+          </div>
         )}
 
       {/* UI */}
       <div className="content">
-        <h1>🔥 CalmFire</h1>
 
         {showHint && (
           <div className="sound-hint" onClick={() => {
@@ -236,12 +240,15 @@ export default function Home() {
         </div>
 
         {/* 人数（仮） */}
-        <p className="viewer">
-          🔥 今この焚火を {circleCount} 人が一緒に見ています
-        </p>
-        <p className="viewer-total">
-          👀 今夜の焚火を {viewerTotal} 人が見ています
-        </p>
+        <div className="presence">
+          <div className="presence-item">
+            🔥 今 {circleCount} 人
+          </div>
+
+          <div className="presence-item">
+            👀 今夜 {viewerTotal} 人
+          </div>
+        </div>
 
         {/* メッセージ */}
         
@@ -270,17 +277,36 @@ export default function Home() {
           <button onClick={sendMessage}>🔥</button>
         </div>
         <div className="activities">
-          <button onClick={() => shareActivity("☕ 誰かが飲み物を一口飲みました")}>
-            ☕ 飲み物
+          <button
+            onClick={() =>
+              shareActivity("☕ 誰かが飲み物を一口飲みました")
+            }
+          >
+            ☕
           </button>
-          <button onClick={() => shareActivity("📖 誰かが本を開きました")}>
-            📖 読書
+
+          <button
+            onClick={() =>
+              shareActivity("📖 誰かが本を開きました")
+            }
+          >
+            📖
           </button>
-          <button onClick={() => shareActivity("🍚 誰かがご飯を食べています")}>
-            🍚 ごはん
+
+          <button
+            onClick={() =>
+              shareActivity("🍚 誰かがご飯を食べています")
+            }
+          >
+            🍚
           </button>
-          <button onClick={() => shareActivity("🔥 誰かが火をじっと見ています")}>
-            🔥 ぼーっと
+
+          <button
+            onClick={() =>
+              shareActivity("🔥 誰かが火をじっと見ています")
+            }
+          >
+            🔥
           </button>
         </div>
       </div>
