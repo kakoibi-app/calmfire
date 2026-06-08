@@ -107,17 +107,48 @@ body, html {
   to   { transform: translateY(-40px); opacity: 0; }
 }
 @media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+
+  .content {
+    padding: 16px;
+  }
+
   .controls {
     position: fixed;
-    bottom: 20px;
+    bottom: 16px;
+    left: 0;
     width: 100%;
     display: flex;
     justify-content: center;
     gap: 8px;
+    z-index: 10;
   }
 
-  h1 {
-    font-size: 20px;
-    text-align: center;
+  .activities {
+    margin-top: 12px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
   }
+
+  .input {
+    position: fixed;
+    bottom: 72px;
+    left: 8px;
+    right: 8px;
+    z-index: 10;
+  }
+
+  .viewer,
+  .viewer-total {
+    font-size: 13px;
+    opacity: 0.85;
+  }
+  
+  .bg-video {
+    filter: brightness(0.75);
+  }
+
 }

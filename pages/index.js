@@ -158,7 +158,15 @@ export default function Home() {
   return (
     <div className="container">
       {/* 背景 */}
-      <video autoPlay loop muted className="bg-video">
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="auto"
+        poster="/fire.png"
+        className="bg-video"
+      >
         <source src="/fire.mp4" type="video/mp4" />
       </video>
       <p className="theme">
