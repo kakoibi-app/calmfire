@@ -183,14 +183,33 @@ export default function Home() {
           <div className="intro-overlay">
             <div className="intro-modal">
               <h2>🔥 CalmFire</h2>
+
               <p>
-                焚火の映像と音を通して、<br />
-                同じ時間を静かに共有する場所です。
+                CalmFireは、焚火の映像と環境音を通して
+                離れた場所にいる人同士が
+                同じ時間を静かに共有するためのサービスです。
               </p>
+
+              <p>
+                会話をしなくてもいい。
+                何かを発信しなくてもいい。
+                ただ火を見ながら、
+                作業や読書、休憩の時間を過ごせます。
+              </p>
+
+              <p>
+                この焚火を見ている人数や、
+                他の人の小さな行動を通して、
+                「誰かと同じ時間を過ごしている」
+                気配だけを感じられます。
+              </p>
+
               <p className="small">
-                音が流れます。<br />
-                必要なものだけONにしてください。
+                🔊 音が流れます。<br />
+                焚火・川・夜の環境音から
+                好きなものだけONにしてください。
               </p>
+
               <button
                 className="enter-button"
                 onClick={() => setEntered(true)}
@@ -198,6 +217,9 @@ export default function Home() {
                 焚火会場へ入る 🔥
               </button>
             </div>
+            <p className="intro-links">
+              <a href="/about">CalmFireについて</a>
+            </p>
           </div>
         )}
 
@@ -393,6 +415,7 @@ export default function Home() {
       </div>
       <footer className="footer">
         焚火サークル「カコイビ」発のリラックスアプリ
+        <a href="/about">CalmFireについて</a>
       </footer>
       <div className="ad-box">
         広告エリア
